@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "E-commerce website for MB Touch business with Django backend and modern frontend"
 authors = ["MB Touch <contact@mbtouch.com>"]
 readme = "README.md"
-packages = [{include = "mb_touch"}]
+packages = [{include = "backend"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
