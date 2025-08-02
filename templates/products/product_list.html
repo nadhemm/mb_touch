@@ -1,0 +1,920 @@
+{% extends 'base.html' %}
+{% block title %}MB Touch - Premium Products{% endblock %}
+
+{% block content %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .contact-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #555;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .contact-item:hover {
+        color: #667eea;
+        transform: translateY(-1px);
+    }
+
+    .cart-btn {
+        position: relative;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .cart-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #ff4757;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .hero {
+        text-align: center;
+        padding: 4rem 0;
+        color: white;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+    }
+
+    /* Summer Sales Section */
+    .summer-sales-section {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+        margin: 2rem 0;
+        border-radius: 20px;
+        padding: 3rem 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .summer-sales-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.4)"/><circle cx="70" cy="80" r="2.5" fill="rgba(255,255,255,0.2)"/><circle cx="10" cy="60" r="1.2" fill="rgba(255,255,255,0.3)"/></svg>');
+        animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-10px) rotate(1deg); }
+        50% { transform: translateY(0px) rotate(0deg); }
+        75% { transform: translateY(-5px) rotate(-1deg); }
+    }
+
+    .summer-sales-content {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 3rem;
+        align-items: center;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .summer-sales-text {
+        color: #333;
+    }
+
+    .summer-sales-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, #e74c3c, #f39c12);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .summer-sales-subtitle {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+
+    .summer-sales-description {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #34495e;
+        margin-bottom: 2rem;
+    }
+
+    .summer-offer-badge {
+        display: inline-block;
+        background: linear-gradient(45deg, #e74c3c, #f39c12);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .summer-sales-image {
+        width: 300px;
+        height: 300px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fan-illustration {
+        width: 200px;
+        height: 200px;
+        position: relative;
+    }
+
+    .fan-base {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 100px;
+        background: linear-gradient(180deg, #8B4513, #D2691E);
+        border-radius: 0 0 30px 30px;
+        box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);
+    }
+
+    .fan-blade {
+        position: absolute;
+        width: 80px;
+        height: 140px;
+        border-radius: 40px 40px 40px 40px / 70px 70px 70px 70px;
+        top: 50%;
+        left: 50%;
+        transform-origin: center bottom;
+        opacity: 0.9;
+        animation: gentle-sway 4s ease-in-out infinite;
+    }
+
+    .fan-blade:nth-child(1) {
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        transform: translate(-50%, -50%) rotate(-30deg);
+        animation-delay: 0s;
+    }
+
+    .fan-blade:nth-child(2) {
+        background: linear-gradient(135deg, #FF69B4, #FF1493);
+        transform: translate(-50%, -50%) rotate(0deg);
+        animation-delay: -1s;
+    }
+
+    .fan-blade:nth-child(3) {
+        background: linear-gradient(135deg, #00CED1, #1E90FF);
+        transform: translate(-50%, -50%) rotate(30deg);
+        animation-delay: -2s;
+    }
+
+    @keyframes gentle-sway {
+        0%, 100% { transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(1); }
+        50% { transform: translate(-50%, -50%) rotate(calc(var(--rotation, 0deg) + 5deg)) scale(1.05); }
+    }
+
+    .decorative-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .henna-pattern {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        opacity: 0.3;
+        animation: rotate 15s linear infinite;
+    }
+
+    .henna-pattern:nth-child(1) { top: 20px; right: 20px; animation-delay: 0s; }
+    .henna-pattern:nth-child(2) { bottom: 20px; left: 20px; animation-delay: -5s; }
+    .henna-pattern:nth-child(3) { top: 50%; right: 10px; animation-delay: -10s; }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .products-section {
+        background: white;
+        margin: 2rem 0;
+        border-radius: 20px;
+        padding: 3rem 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+        color: #333;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border-radius: 2px;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 0 2rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.05);
+    }
+
+    .product-info {
+        padding: 1.5rem;
+    }
+
+    .product-name {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .product-description {
+        color: #666;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 1rem;
+    }
+
+    .add-to-cart {
+        width: 100%;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .add-to-cart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 2rem;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        position: relative;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close:hover {
+        color: #333;
+    }
+
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1rem;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quantity-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #eee;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+    }
+
+    .total-price {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin: 1rem 0;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    footer {
+        background: rgba(255, 255, 255, 0.95);
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        backdrop-filter: blur(10px);
+    }
+
+    footer a:hover {
+        color: #667eea !important;
+    }
+
+    .loading {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .spinner {
+        border: 4px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 4px solid #667eea;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .header-content {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-info {
+            justify-content: center;
+        }
+
+        .products-grid {
+            grid-template-columns: 1fr;
+            padding: 0 1rem;
+        }
+
+        .summer-sales-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .summer-sales-image {
+            margin: 0 auto;
+        }
+
+        .summer-sales-title {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">MB Touch</div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>22345678</span>
+                </div>
+                <a href="https://www.facebook.com/profile.php?id=100063819411734" target="_blank" class="contact-item" style="text-decoration: none; color: #555; transition: color 0.3s ease;">
+                    <i class="fab fa-facebook" style="color: #1877f2;"></i>
+                    <span>Follow Us</span>
+                </a>
+                <button class="cart-btn" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <h1>Welcome to MB Touch</h1>
+        <p>Discover our premium collection of quality products</p>
+    </div>
+</section>
+
+{% load static %}
+
+<!-- Summer Sales Section -->
+<section class="summer-sales-section">
+    <div class="container">
+        <div class="summer-sales-content">
+            <div class="summer-sales-text">
+                <h2 class="summer-sales-title">🌟 Soldes d'Été Spéciales 🌟</h2>
+                <h3 class="summer-sales-subtitle">Collection Mariage Tunisien - Éventails en Plexi</h3>
+                <p class="summer-sales-description">
+                    Célébrez vos moments les plus précieux avec nos magnifiques éventails en plexiglas, parfaits pour les mariages tunisiens et les festivités d'été. Designs élégants inspirés des traditions tunisiennes avec une touche moderne et raffinée.
+                </p>
+                <div class="summer-offer-badge">
+                    Jusqu'à 30% de Réduction
+                </div>
+            </div>
+            <div class="summer-sales-image">
+                <img src="{% static 'images/sales.png' %}" alt="Soldes Été Mariage Tunisien - Éventail Plexi" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="products-section">
+    <div class="container">
+        <h2 class="section-title">Our Products</h2>
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading products...</p>
+        </div>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here -->
+        </div>
+    </div>
+</section>
+
+<!-- Cart Modal -->
+<div id="cartModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCart()">&times;</span>
+        <h2>Your Cart</h2>
+        <div id="cartItems">
+            <!-- Cart items will be displayed here -->
+        </div>
+        <div class="total-price" id="totalPrice">Total: 0.00 DT</div>
+
+        <form id="orderForm" onsubmit="submitOrder(event)">
+            <div class="form-group">
+                <label for="customerName">Your Name *</label>
+                <input type="text" id="customerName" required>
+            </div>
+            <div class="form-group">
+                <label for="customerPhone">Phone Number *</label>
+                <input type="tel" id="customerPhone" required>
+            </div>
+            <button type="submit" class="checkout-btn">
+                <i class="fas fa-check"></i>
+                Place Order (Cash on Delivery)
+            </button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 MB Touch. All rights reserved.</p>
+        <p>
+            <i class="fas fa-phone" style="color: #667eea; margin-right: 8px;"></i>
+            22345678
+            <span style="margin: 0 15px;">|</span>
+            <i class="fas fa-envelope" style="color: #667eea; margin-right: 8px;"></i>
+            <a href="mailto:mb.touch@outlook.com" style="color: #555; text-decoration: none; transition: color 0.3s ease;">mb.touch@outlook.com</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    let cart = [];
+    let products = [];
+
+    // Load products when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProducts();
+    });
+
+    async function loadProducts() {
+        try {
+            document.getElementById('loading').style.display = 'block';
+
+            // Try to load from Django API first
+            const response = await fetch('/api/products/');
+            const data = await response.json();
+            products = data.products;
+            displayProducts(products);
+
+        } catch (error) {
+            console.error('Error loading products:', error);
+
+            // Fallback to sample products if API fails
+            products = [
+                {
+                    id: 1,
+                    name: "Premium Fan",
+                    description: "Beautiful handcrafted fan with elegant design",
+                    price: 25.99,
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkZhbiBJbWFnZTwvdGV4dD48L3N2Zz4="
+                },
+                {
+                    id: 2,
+                    name: "Decorative Fan Set",
+                    description: "Set of 3 decorative fans for special occasions",
+                    price: 45.50,
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkZhbiBTZXQ8L3RleHQ+PC9zdmc+"
+                },
+                {
+                    id: 3,
+                    name: "Luxury Fan Collection",
+                    description: "Premium quality fans with intricate patterns",
+                    price: 75.00,
+                    image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkx1eHVyeSBGYW48L3RleHQ+PC9zdmc+"
+                }
+            ];
+            displayProducts(products);
+        } finally {
+            document.getElementById('loading').style.display = 'none';
+        }
+    }
+
+    function displayProducts(products) {
+        const grid = document.getElementById('productsGrid');
+        grid.innerHTML = '';
+
+        products.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-name">${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-price">${product.price} DT</div>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        <i class="fas fa-cart-plus"></i>
+                        Add to Cart
+                    </button>
+                </div>
+            `;
+            grid.appendChild(productCard);
+        });
+    }
+
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        const existingItem = cart.find(item => item.id === productId);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1
+            });
+        }
+
+        updateCartUI();
+
+        // Show success animation
+        const button = event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Added!';
+        button.style.background = '#2ecc71';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = '';
+        }, 1000);
+    }
+
+    function removeFromCart(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        updateCartUI();
+    }
+
+    function updateQuantity(productId, change) {
+        const item = cart.find(item => item.id === productId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                updateCartUI();
+            }
+        }
+    }
+
+    function updateCartUI() {
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const totalPrice = document.getElementById('totalPrice');
+
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        cartCount.textContent = totalItems;
+        totalPrice.textContent = `Total: ${total.toFixed(2)} DT`;
+
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">Your cart is empty</p>';
+        } else {
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <h4>${item.name}</h4>
+                        <p>${item.price} DT each</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        <button class="quantity-btn" onclick="removeFromCart(${item.id})" style="background: #ff4757; margin-left: 10px;">×</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    function openCart() {
+        document.getElementById('cartModal').style.display = 'block';
+        updateCartUI();
+    }
+
+    function closeCart() {
+        document.getElementById('cartModal').style.display = 'none';
+    }
+
+    async function submitOrder(event) {
+        event.preventDefault();
+
+        const customerName = document.getElementById('customerName').value;
+        const customerPhone = document.getElementById('customerPhone').value;
+
+        if (cart.length === 0) {
+            alert('Your cart is empty!');
+            return;
+        }
+
+        const orderData = {
+            customer_name: customerName,
+            customer_phone: customerPhone,
+            items: cart.map(item => ({
+                product_id: item.id,
+                quantity: item.quantity
+            }))
+        };
+
+        try {
+            const response = await fetch('/api/create-order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Order placed successfully! We will call you soon to confirm details.');
+                cart = [];
+                updateCartUI();
+                closeCart();
+                document.getElementById('orderForm').reset();
+            } else {
+                alert('Error placing order: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error placing order. Please try again.');
+        }
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('cartModal');
+        if (event.target === modal) {
+            closeCart();
+        }
+    }
+</script>
+{% endblock %}

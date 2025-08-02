@@ -1,0 +1,122 @@
+[tool.poetry]
+name = "mb-touch-ecommerce"
+version = "0.1.0"
+description = "E-commerce website for MB Touch business with Django backend and modern frontend"
+authors = ["MB Touch <contact@mbtouch.com>"]
+readme = "README.md"
+packages = [{include = "mb_touch"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.2"
+pillow = "^10.0.0"
+django-cors-headers = "^4.3.0"
+python-decouple = "^3.8"
+whitenoise = "^6.5.0"
+gunicorn = "^21.2.0"
+psycopg2-binary = "^2.9.7"
+django-storages = "^1.14.0"
+boto3 = "^1.28.0"
+celery = "^5.3.0"
+redis = "^4.6.0"
+django-extensions = "^3.2.3"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+pytest = "^7.4.0"
+pytest-django = "^4.5.2"
+pytest-cov = "^4.1.0"
+factory-boy = "^3.3.0"
+django-debug-toolbar = "^4.2.0"
+pre-commit = "^3.3.3"
+
+[tool.poetry.group.production.dependencies]
+sentry-sdk = "^1.29.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_django = "django"
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip = ["migrations"]
+
+[tool.flake8]
+max-line-length = 88
+exclude = [
+    ".git",
+    "__pycache__",
+    "migrations",
+    ".venv",
+    "venv",
+    ".tox",
+    "build",
+    "dist"
+]
+ignore = [
+    "E203",  # whitespace before ':'
+    "E501",  # line too long (handled by black)
+    "W503",  # line break before binary operator
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "mb_touch.settings.test"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=.",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=80"
+]
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = "."
+omit = [
+    "*/migrations/*",
+    "*/venv/*",
+    "*/env/*",
+    "manage.py",
+    "*/settings/*",
+    "*/tests/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
