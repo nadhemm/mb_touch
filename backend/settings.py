@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-&fc^d_rj=dreg%(km(fv@s#mlr2wo_1wj9%6g&(phjw#am_6)g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # "mbtouch-production.up.railway.app"
+    "*"
+]
 
 
 # Application definition
